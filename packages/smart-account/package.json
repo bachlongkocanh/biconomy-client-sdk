@@ -21,7 +21,8 @@
     "format": "prettier --write \"{src,tests}/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "install": "yarn build",
-    "postinstall": "yarn build"
+    "postinstall": "yarn build",
+    "prepare": "yarn build"
   },
   "author": "Biconomy (https://biconomy.io)",
   "license": "MIT",
