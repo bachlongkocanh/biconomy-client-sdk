@@ -61,7 +61,7 @@ import {
   BaseWalletAPI
 } from '@biconomy/account-abstraction'
 
-import { ethers, Signer } from 'ethers'
+import { ethers, Signer, Wallet } from 'ethers'
 import { TransactionRequest } from '@ethersproject/providers/lib'
 
 let isLogsEnabled = false
@@ -83,7 +83,7 @@ class SmartAccount extends EventEmitter {
   // Chain configurations fetched from backend
   chainConfig!: ChainConfig[]
 
-  provider!: Web3Provider
+  provider!: Wallet
 
   // 4337Provider
   aaProvider!: { [chainId: number]: ERC4337EthersProvider }
@@ -120,7 +120,7 @@ class SmartAccount extends EventEmitter {
    * If you wish to use your own backend server and relayer service, pass the URLs here
    */
   // Note: Could remove WalletProvider later on
-  constructor(walletProvider: Web3Provider, config?: Partial<SmartAccountConfig>) {
+  constructor(walletProvider: Wallet, config?: Partial<SmartAccountConfig>) {
     super()
     if (config && config.debug === true) {
       isLogsEnabled = true

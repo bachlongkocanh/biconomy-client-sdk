@@ -1,4 +1,5 @@
-import { Web3Provider, BaseProvider } from '@ethersproject/providers'
+import { Wallet, } from '@ethersproject/wallet'
+import { BaseProvider, } from '@ethersproject/providers'
 import { SmartAccountSigner } from '../signers/SmartAccountSigner'
 import { Signer } from 'ethers'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -32,7 +33,7 @@ export class SmartAccountProvider extends BaseProvider {
   //
   // Might need relayer url in config
   constructor(
-    tempProvider: Web3Provider,
+    tempProvider: Wallet,
     chainId: ChainId,
     readonly originalSigner: Signer, // EOASigner
     readonly originalProvider: BaseProvider // could be Web3Provider // optional? // readonly httpRpcClient: HttpRpcClient, // Required for relaying to rpc-relayer // readonly smartAccountAPI: SmartAccountAPI ? // Could be useful/needful

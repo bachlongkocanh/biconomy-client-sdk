@@ -1,6 +1,7 @@
 import { BigNumber, ethers } from 'ethers'
 import { BytesLike } from '@ethersproject/bytes'
 import { JsonRpcProvider } from '@ethersproject/providers'
+import { Wallet } from 'ethers'
 import {
   TypedDataDomain,
   TypedDataField,
@@ -15,14 +16,16 @@ import { Deferrable } from 'ethers/lib/utils'
 import { TransactionRequest } from '@ethersproject/providers'
 
 export class SmartAccountSigner extends EthersSigner implements TypedDataSigner {
-  readonly provider: JsonRpcProvider
+  readonly provider: JsonRpcProvider | any
   // todo : later
   //readonly sender: JsonRpcSender
   readonly defaultChainId: number | undefined
+  readonly wallet: Wallet
 
-  constructor(provider: JsonRpcProvider, defaultChainId?: number) {
+  constructor(wallet: Wallet, defaultChainId?: number) {
     super()
-    this.provider = provider
+    this.provider = wallet.provider
+    this.wallet = wallet
     this.defaultChainId = defaultChainId
     // todo : later
     //this.sender = new JsonRpcSender(provider)
@@ -42,8 +45,8 @@ export class SmartAccountSigner extends EthersSigner implements TypedDataSigner 
    */
   async getAddress(): Promise<string> {
     if (this._address) return this._address
-    const accounts = await this.provider.send('eth_accounts', [])
-    this._address = accounts[0]
+
+    this._address = this.wallet.address
     return ethers.utils.getAddress(this._address)
   }
 
@@ -55,7 +58,8 @@ export class SmartAccountSigner extends EthersSigner implements TypedDataSigner 
     if (!this.provider) {
       throw new Error('missing provider')
     }
-    const signature: any = await this.provider.send('eth_signTransaction', [transaction])
+    // const signature: any = await this.provider.send('eth_signTransaction', [transaction])
+    const signature: any = await this.wallet.sendTransaction(transaction)
     return signature
   }
 
@@ -70,7 +74,8 @@ export class SmartAccountSigner extends EthersSigner implements TypedDataSigner 
     }
     const data = typeof message === 'string' ? ethers.utils.toUtf8Bytes(message) : message
     const address = await this.getAddress()
-    return await this.provider.send('personal_sign', [ethers.utils.hexlify(data), address])
+    // return await this.provider.send('personal_sign', [ethers.utils.hexlify(data), address])
+    return await this.wallet.signMessage(message)
   }
 
   // signTypedData matches implementation from ethers JsonRpcSigner for compatibility
