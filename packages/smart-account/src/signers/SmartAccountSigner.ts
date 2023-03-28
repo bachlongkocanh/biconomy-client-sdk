@@ -72,9 +72,6 @@ export class SmartAccountSigner extends EthersSigner implements TypedDataSigner 
     if (!this.provider) {
       throw new Error('missing provider')
     }
-    const data = typeof message === 'string' ? ethers.utils.toUtf8Bytes(message) : message
-    const address = await this.getAddress()
-    // return await this.provider.send('personal_sign', [ethers.utils.hexlify(data), address])
     return await this.wallet.signMessage(message)
   }
 
@@ -90,11 +87,8 @@ export class SmartAccountSigner extends EthersSigner implements TypedDataSigner 
     if (domainChainId && domainChainId !== activeChainId) {
       throw new Error('Domain chainId is different from active chainId.')
     }
-
-    return await this.provider.send('eth_signTypedData_v4', [
-      await this.getAddress(),
-      JSON.stringify(ethers.utils._TypedDataEncoder.getPayload(domain, types, message))
-    ])
+    const signature = await this.wallet._signTypedData(domain, types, message)
+    return signature
   }
 
   /* eslint-disable  @typescript-eslint/no-explicit-any */

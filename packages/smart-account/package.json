@@ -19,10 +19,7 @@
     "test:run": "yarn test:file tests/**/*.spec.ts",
     "start:ganache": "ganache -m 'direct buyer cliff train rice spirit census refuse glare expire innocent quote'",
     "format": "prettier --write \"{src,tests}/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json",
-    "install": "yarn build",
-    "postinstall": "yarn build",
-    "prepare": "yarn build"
+    "lint": "tslint -p tsconfig.json"
   },
   "author": "Biconomy (https://biconomy.io)",
   "license": "MIT",

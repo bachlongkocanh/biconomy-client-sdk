@@ -41,7 +41,6 @@ import NodeClient, {
   BalancesDto,
   UsdBalanceResponse
 } from '@biconomy/node-client'
-import { Web3Provider } from '@ethersproject/providers'
 import { IRelayer, RestRelayer } from '@biconomy/relayer'
 import * as _ from 'lodash'
 import TransactionManager, {
